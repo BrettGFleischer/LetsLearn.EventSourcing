@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LetsLearn.EventSourcing.BasicCrudExample", "LetsLearn.EventSourcing.BasicCrudExample\LetsLearn.EventSourcing.BasicCrudExample.csproj", "{431C8221-8F7B-48BE-977D-71D20D2123EF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LetsLearn.EventSourcing.BasicEventSourcingExample", "LetsLearn.EventSourcing.BasicEventSourcingExample\LetsLearn.EventSourcing.BasicEventSourcingExample.csproj", "{1DFBED24-38C3-4F63-AC7A-E9C9C61F29D8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{431C8221-8F7B-48BE-977D-71D20D2123EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{431C8221-8F7B-48BE-977D-71D20D2123EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{431C8221-8F7B-48BE-977D-71D20D2123EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{431C8221-8F7B-48BE-977D-71D20D2123EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DFBED24-38C3-4F63-AC7A-E9C9C61F29D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DFBED24-38C3-4F63-AC7A-E9C9C61F29D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DFBED24-38C3-4F63-AC7A-E9C9C61F29D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DFBED24-38C3-4F63-AC7A-E9C9C61F29D8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
