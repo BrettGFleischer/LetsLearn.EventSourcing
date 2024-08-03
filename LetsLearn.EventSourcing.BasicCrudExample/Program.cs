@@ -11,15 +11,15 @@ var newAccountId = account.Id;
 Thread.Sleep(1000);
 
 // Deposit money
-accountContext.Deposit(newAccountId, 2000);
+var firstDepositResult = accountContext.Deposit(newAccountId, 2000);
 // Withdraw money...
-accountContext.Withdraw(newAccountId, 500);
+var firstWithdrawalResult = accountContext.Withdraw(newAccountId, 500);
 
 // Simulate some delay
 Thread.Sleep(1000);
 
 // Withdraw more money...
-accountContext.Withdraw(newAccountId, 50);
+var secondWithdrawalResult = accountContext.Withdraw(newAccountId, 50);
 
 // View the current state of the account
 ConsoleHelpers.LogAccountInfo([accountContext.GetAccountById(newAccountId)]);
