@@ -26,27 +26,31 @@ public class AccountContext : IDisposable
         return account;
     }
 
-    public void Deposit(Guid accountId, decimal amount)
+    public Account Deposit(Guid accountId, decimal amount)
     {
         if (amount <= 0)
         {
             throw new ArgumentException("Amount must be positive.");
         }
 
-        var account = GetAccountById(accountId) ?? throw new Exception($"Account with Id '{accountId}' does not exist");
+        var account = GetAccountById(accountId) ??
+                      throw new Exception($"Account with Id '{accountId}' does not exist");
 
         account.Balance += amount;
         _dbContext.SaveChanges();
+
+        return account;
     }
 
-    public void Withdraw(Guid accountId, decimal amount)
+    public Account Withdraw(Guid accountId, decimal amount)
     {
         if (amount <= 0)
         {
             throw new ArgumentException("Amount must be positive.");
         }
 
-        var account = GetAccountById(accountId) ?? throw new Exception($"Account with Id '{accountId}' does not exist");
+        var account = GetAccountById(accountId) ??
+                      throw new Exception($"Account with Id '{accountId}' does not exist");
 
         var newBalance = account.Balance - amount;
 
@@ -57,6 +61,8 @@ public class AccountContext : IDisposable
 
         account.Balance = newBalance;
         _dbContext.SaveChanges();
+
+        return account;
     }
 
     public Account CloseAccount(Guid id)

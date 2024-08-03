@@ -28,7 +28,10 @@ public class AccountAggregate
     {
         _dbContext = dbContext;
 
-        var baseEvents = _dbContext.BaseEvents.Where(e => e.AccountId == accountId).OrderBy(a => a.Version).ToList();
+        var baseEvents = _dbContext.BaseEvents
+            .Where(e => e.AccountId == accountId)
+            .OrderBy(a => a.Version)
+            .ToList();
 
         if (baseEvents.Count < 0)
         {
@@ -97,7 +100,7 @@ public class AccountAggregate
         {
             Amount = withdrawalAmount
         };
-        
+
         PersistAndApplyEvent(withdrawalEvent);
     }
 
@@ -121,7 +124,7 @@ public class AccountAggregate
         }
 
         var deactivateAccountEvent = new DeactivateAccountEvent(AccountId, NextVersion());
-        
+
         PersistAndApplyEvent(deactivateAccountEvent);
     }
 
