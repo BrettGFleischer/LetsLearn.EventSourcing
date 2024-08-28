@@ -43,7 +43,7 @@ This repository showcases a simple Account management system using two different
 
 ### Learn More
 
-For a detailed explanation of Event Sourcing and the code examples, check out my blog post: [Let's Learn Event Sourcing](https://yourbloglink.com)
+For a detailed explanation of Event Sourcing and the code examples, check out my blog post: [Let's Learn Event Sourcing](https://brettsblog.hashnode.dev/lets-learn-event-sourcing-part-2)
 
 ### Contributing
 
