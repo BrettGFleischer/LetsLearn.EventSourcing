@@ -1,3 +1,3 @@
 namespace LetsLearn.EventSourcing.BasicEventSourcingExample.Commands;
 
-public record WithdrawalCommand(decimal Amount);
+public record WithdrawalCommand(decimal Amount, Guid TransactionId);

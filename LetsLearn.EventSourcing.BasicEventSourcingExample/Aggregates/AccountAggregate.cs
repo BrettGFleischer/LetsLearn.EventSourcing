@@ -14,6 +14,7 @@ public class AccountAggregate
     private uint Version { get; set; }
     private DateTime LastModifiedDate { get; set; }
     private DateTime CreatedDate { get; set; }
+    private readonly HashSet<Guid> _processedTransactions = [];
 
     private readonly InMemoryDbContext _dbContext;
 
@@ -67,10 +68,15 @@ public class AccountAggregate
             throw new ArgumentException("Amount must be positive.");
         }
 
-        var depositEvent = new DepositEvent(AccountId, NextVersion())
+        var transactionId = depositCommand.TransactionId;
+        var transactionExists = TransactionExists(transactionId);
+        if (transactionExists)
         {
-            Amount = depositAmount
-        };
+            // Transaction has already been processed, throw an exception
+            throw new Exception($"Transaction '{transactionId}' has already been processed for Account '{AccountId}'.");
+        }
+
+        var depositEvent = new DepositEventV2(AccountId, NextVersion(), depositAmount, transactionId);
 
         PersistAndApplyEvent(depositEvent);
     }
@@ -96,10 +102,15 @@ public class AccountAggregate
             throw new Exception("Not enough funds for Withdrawal");
         }
 
-        var withdrawalEvent = new WithdrawalEvent(AccountId, NextVersion())
+        var transactionId = withdrawalCommand.TransactionId;
+        var transactionExists = TransactionExists(transactionId);
+        if (transactionExists)
         {
-            Amount = withdrawalAmount
-        };
+            // Transaction has already been processed, throw an exception
+            throw new Exception($"Transaction '{transactionId}' has already been processed for Account '{AccountId}'.");
+        }
+
+        var withdrawalEvent = new WithdrawalEventV2(AccountId, NextVersion(), withdrawalAmount, transactionId);
 
         PersistAndApplyEvent(withdrawalEvent);
     }
@@ -147,16 +158,34 @@ public class AccountAggregate
         UpdateAuditProperties(openAccountEvent);
     }
 
-    private void Apply(DepositEvent depositEvent)
+    private void Apply(DepositEventV2 depositEvent)
     {
+        var transactionId = depositEvent.TransactionId;
+        var transactionExists = TransactionExists(transactionId);
+        if (transactionExists)
+        {
+            // Transaction has already been processed, log a warning
+            Console.WriteLine($"Transaction '{transactionId}' has already been applied for Account '{AccountId}'.");
+        }
+
         Balance += depositEvent.Amount;
         UpdateAuditProperties(depositEvent);
+        _processedTransactions.Add(depositEvent.TransactionId);
     }
 
-    private void Apply(WithdrawalEvent withdrawalEvent)
+    private void Apply(WithdrawalEventV2 withdrawalEvent)
     {
+        var transactionId = withdrawalEvent.TransactionId;
+        var transactionExists = TransactionExists(transactionId);
+        if (transactionExists)
+        {
+            // Transaction has already been processed, log a warning
+            Console.WriteLine($"Transaction '{transactionId}' has already been applied for Account '{AccountId}'.");
+        }
+
         Balance -= withdrawalEvent.Amount;
         UpdateAuditProperties(withdrawalEvent);
+        _processedTransactions.Add(withdrawalEvent.TransactionId);
     }
 
     private void Apply(ActivateAccountEvent activateAccountEvent)
@@ -186,10 +215,10 @@ public class AccountAggregate
             case OpenAccountEvent @event:
                 Apply(@event);
                 break;
-            case DepositEvent @event:
+            case DepositEventV2 @event:
                 Apply(@event);
                 break;
-            case WithdrawalEvent @event:
+            case WithdrawalEventV2 @event:
                 Apply(@event);
                 break;
             case ActivateAccountEvent @event:
@@ -222,5 +251,10 @@ public class AccountAggregate
     private uint NextVersion()
     {
         return Version + 1;
+    }
+
+    private bool TransactionExists(Guid transactionId)
+    {
+        return _processedTransactions.Contains(transactionId);
     }
 }

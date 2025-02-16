@@ -11,15 +11,22 @@ var newAccountId = account.AccountId;
 Thread.Sleep(1000);
 
 // Deposit money
-var firstDepositResult = accountContext.Deposit(newAccountId, 2000);
+var firstDepositId = Guid.NewGuid();
+var firstDepositResult = accountContext.Deposit(newAccountId, 2000, firstDepositId);
 // Withdraw money...
-var firstWithdrawalResult = accountContext.Withdraw(newAccountId, 500);
+var firstWithdrawalId = Guid.NewGuid();
+var firstWithdrawalResult = accountContext.Withdraw(newAccountId, 500, firstWithdrawalId);
 
 // Simulate some delay
 Thread.Sleep(1000);
 
 // Withdraw more money...
-var secondWithdrawalResult = accountContext.Withdraw(newAccountId, 50);
+var secondWithdrawalId = Guid.NewGuid();
+var secondWithdrawalResult = accountContext.Withdraw(newAccountId, 50, secondWithdrawalId);
+
+// Uncomment to run the last transaction again...
+// And get Transaction 'transactionId' has already been processed for Account 'accountId'.
+//var duplicateSecondWithdrawalResult = accountContext.Withdraw(newAccountId, 50, secondWithdrawalId);
 
 // View the current state of the account
 ConsoleHelpers.LogAccountInfo([accountContext.GetAccountById(newAccountId)]);
