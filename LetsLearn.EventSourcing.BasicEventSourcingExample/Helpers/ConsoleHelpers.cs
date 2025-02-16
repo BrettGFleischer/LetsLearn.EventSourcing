@@ -35,14 +35,14 @@ public static class ConsoleHelpers
     {
         Console.WriteLine();
         Console.WriteLine();
-        Console.WriteLine(new string('=', 120));
-        Console.WriteLine("{0,-40} {1,-10} {2,-20} {3,-20} {4,-20}",
+        Console.WriteLine(new string('=', 130));
+        Console.WriteLine("{0,-40} {1,-10} {2,-30} {3,-20} {4,-20}",
             "Account Id",
             "Event Id",
             "Event Type",
             "Balance Diff",
             "Event Date");
-        Console.WriteLine(new string('-', 120));
+        Console.WriteLine(new string('-', 130));
 
         foreach (var baseEvent in baseEvents.OrderBy(e => e.AccountId).ThenBy(e => e.Version))
         {
@@ -55,8 +55,16 @@ public static class ConsoleHelpers
                     WriteEventToConsole(@event.AccountId, @event.Id, "DepositEvent", $"+{@event.Amount}",
                         @event.EventDate);
                     break;
+                case DepositEventV2 @event:
+                    WriteEventToConsole(@event.AccountId, @event.Id, "DepositEventV2", $"+{@event.Amount}",
+                        @event.EventDate);
+                    break;
                 case WithdrawalEvent @event:
                     WriteEventToConsole(@event.AccountId, @event.Id, "WithdrawalEvent", $"-{@event.Amount}",
+                        @event.EventDate);
+                    break;
+                case WithdrawalEventV2 @event:
+                    WriteEventToConsole(@event.AccountId, @event.Id, "WithdrawalEventV2", $"-{@event.Amount}",
                         @event.EventDate);
                     break;
                 case ActivateAccountEvent @event:
@@ -68,7 +76,7 @@ public static class ConsoleHelpers
             }
         }
 
-        Console.WriteLine(new string('=', 120));
+        Console.WriteLine(new string('=', 130));
 
         return;
 
@@ -80,7 +88,7 @@ public static class ConsoleHelpers
             string balanceDiff,
             DateTime lastModified)
         {
-            Console.WriteLine("{0,-40} {1,-10} {2,-20} {3,-20} {4,-20}",
+            Console.WriteLine("{0,-40} {1,-10} {2,-30} {3,-20} {4,-20}",
                 $"{accountId}",
                 $"{eventId}",
                 eventType,

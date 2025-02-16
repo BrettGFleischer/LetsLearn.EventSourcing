@@ -16,6 +16,7 @@ public class AccountContext : IDisposable
         _dbContext.Database.EnsureCreated();
     }
 
+    // Commands
     public AccountViewModel OpenAccount()
     {
         var accountAggregate = new AccountAggregate(_dbContext);
@@ -45,24 +46,25 @@ public class AccountContext : IDisposable
         return accountAggregate.GetAccountView();
     }
 
-    public AccountViewModel Deposit(Guid accountId, decimal amount)
+    public AccountViewModel Deposit(Guid accountId, decimal amount, Guid transactionId)
     {
         var accountAggregate = new AccountAggregate(_dbContext, accountId);
 
-        accountAggregate.HandleDepositCommand(new DepositCommand(amount));
+        accountAggregate.HandleDepositCommand(new DepositCommand(amount, transactionId));
 
         return accountAggregate.GetAccountView();
     }
 
-    public AccountViewModel Withdraw(Guid accountId, decimal amount)
+    public AccountViewModel Withdraw(Guid accountId, decimal amount, Guid transactionId)
     {
         var accountAggregate = new AccountAggregate(_dbContext, accountId);
 
-        accountAggregate.HandleWithdrawalCommand(new WithdrawalCommand(amount));
+        accountAggregate.HandleWithdrawalCommand(new WithdrawalCommand(amount, transactionId));
 
         return accountAggregate.GetAccountView();
     }
 
+    // Queries
     public AccountViewModel GetAccountById(Guid accountId)
     {
         return new AccountAggregate(_dbContext, accountId).GetAccountView();
